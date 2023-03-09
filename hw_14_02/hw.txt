@@ -1,0 +1,67 @@
+// определяем константы
+open_time = 9:00
+close_time = 17:00
+early_price = 1
+late_price = 2
+mid_price = 2
+
+// Define input variables
+start_time = [list of start times for each application]
+end_time = [list of end times for each application]
+
+// инициализация переменных
+max_benefit = 0
+occupied = False
+occupied_until = None
+
+// Sort applications by start time сортировка по времени
+applications = zip(start_time, end_time)
+applications = sorted(applications, key=lambda x: x[0])
+
+// Loop through each application
+for app in applications:
+    app_start, app_end = app
+    
+    // Calculate benefit for early application
+    if app_start <= OPEN_TIME and app_end <= 13:00:
+        benefit = EARLY_PRICE
+    
+    // Calculate benefit for late application
+    elif app_start >= 13:00 and app_end >= CLOSE_TIME:
+        benefit = LATE_PRICE
+    
+    // Calculate benefit for midday application
+    elif app_start >= OPEN_TIME and app_end <= CLOSE_TIME and app_start < 13:00 and app_end > 13:00:
+        benefit = MID_PRICE
+    
+    // Calculate benefit for upside crossing application
+    elif app_start < OPEN_TIME and app_end > 13:00:
+        benefit = EARLY_PRICE + LATE_PRICE
+    
+    // Calculate benefit for big direction intersection application
+    elif app_start < 13:00 and app_end > CLOSE_TIME:
+        benefit = EARLY_PRICE + LATE_PRICE
+    
+    // Calculate benefit for non-occupying application
+    else:
+        benefit = 0
+    
+    // Check if application is a secondary occupancy
+    if app_start < occupied_until:
+        benefit /= 2
+    
+    // Update maximum benefit and occupied status
+    if benefit > max_benefit:
+        max_benefit = benefit
+        occupied_until = app_end
+        occupied = True
+        
+// Return maximum benefit
+return max_benefit
+
+//Алгоритм сначала сортирует приложения по времени запуска,
+// а затем перебирает каждое приложение, чтобы вычислить его выгоду на основе заданной схемы ценообразования. 
+//Для приложений, которые перекрываются с предыдущим приложением, выгода делится на 2, 
+// чтобы отразить, что это вторичное размещение.
+//Затем алгоритм обновляет максимальное преимущество и занятый статус на основе текущего приложения. 
+//Наконец, алгоритм возвращает максимальную выгоду.
