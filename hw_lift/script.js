@@ -1,6 +1,6 @@
 const lifts = [
-    {id: 'A', currentFloor: 2, direction: 'up'},
-    {id: 'B', currentFloor: 9, direction: 'down'}
+    {id: 'A', currentFloor: 0, direction: 'up'},
+    {id: 'B', currentFloor: 8, direction: 'down'}
   ];
   
   function sendLiftToFloor(floor) {
